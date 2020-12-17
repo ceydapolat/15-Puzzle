@@ -15,35 +15,31 @@ public class Astar implements Search {
 		this.initialNode = node; 
 		this.i = i; // this int value helps determine which heuristic will be used
 	}
-	
-	private class f1Comparator implements Comparator<BoardNode>{  //comparator for tiles misplaced heuristic that will be used in Priority Queue
-		
-		Heuristics h = new Heuristics();
-		
-		public int compare(BoardNode a, BoardNode b) {
-			return (a.getMaxCost() + h.numCorPos(a)) - (b.getMaxCost()+h.numCorPos(b));
-		}
-	}
-	
 
-	private class f2Comparator implements Comparator<BoardNode>{			//comparator for manhattan heuristic and totalCost 
-		
-		Heuristics h = new Heuristics();
-		
-		public int compare(BoardNode a, BoardNode b) {
-			return (a.getMaxCost() + h.manhattan(a)) - (b.getMaxCost()+h.manhattan(b));
-		}
-	}
 	
 public boolean search() {
-		
+
+	Comparator<BoardNode> f1Comparator = new Comparator<BoardNode>() {
+		@Override
+		public int compare(BoardNode a, BoardNode b) {
+			return (a.getMaxCost() + numCorPos(a)) - (b.getMaxCost()+numCorPos(b));
+		}
+	};
+
+	Comparator<BoardNode> f2Comparator = new Comparator<BoardNode>() {
+		@Override
+		public int compare(BoardNode a, BoardNode b) {
+			return (a.getMaxCost() + manhattan(a)) - (b.getMaxCost()+ manhattan(b));
+		}
+	};
+
 		//Astar search which creates a priority queue which sorts according to h(n)
 				Info info = new Info();
 				if(this.i==1) {
-					info.makePQueue(new f1Comparator());
+					info.makePQueue(f1Comparator);
 				}
 				else {
-					info.makePQueue(new f2Comparator());
+					info.makePQueue(f2Comparator);
 				}
 				 //making a priority queue with one of the heuristics determine the Comparator
 				BoardNode node = initialNode;
@@ -62,7 +58,7 @@ public boolean search() {
 					
 					Successor s = new Successor(); // Successor class created to provide next possible moves from current node
 					List<BoardNode> list = s.successor(node); // list of potential children
-					expandedNode += list.size();
+
 
 					for(BoardNode temp: list) {
 						boolean ans = info.visited.contains(temp.getString()); //Uses temporary node's hashCode to check if it has been expanded or not.
@@ -70,13 +66,41 @@ public boolean search() {
 							if(!(info.pQueue.contains(temp))){
 								info.pQueue.add(temp);
 								info.pQueueSize();
+								expandedNode++;
 							}
-							
-							
 						}
 					}
 				}
 				return false;
 			}
 
+	//First Heuristic which tells us how many tiles are in an incorrect position
+
+	public int numCorPos(BoardNode node) {
+		int [][] goal ={{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
+		int result = 0;
+		int [][] state = node.getMatrix();
+		for(int i=0; i<state.length; i++) {
+			for(int j=0; j<state.length; j++) {
+				if(goal[i][j]!=state[i][j]) {
+					result += 1;
+				}
+			}
+		}
+		return result;
+	}
+
+	public int manhattan(BoardNode node) {   //second heuristic which uses a goal state to help determined how far argument node tiles are from desired position
+//		int [][]goal = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
+		int result = 0;
+		int [][]state = node.getMatrix();
+		for(int i=0; i<state.length; i++) {
+			for(int j=0; j<state.length; j++) {
+				int value = state[i][j];
+				int maxValue = Math.max(Math.abs(i - node.getRow(value)), Math.abs(j - node.getCol(value)));
+				result += maxValue;
+			}
+		}
+		return result;
+	}
 }

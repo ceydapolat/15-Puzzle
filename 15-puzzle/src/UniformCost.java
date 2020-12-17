@@ -26,6 +26,7 @@ public class UniformCost implements Search {
 		info.pQueue.add(node);
 		
 		while(!(info.pQueue.isEmpty())) {
+
 			node = info.pQueue.poll();
 			info.incTime();
 			info.visited.add(node.getString());
@@ -47,9 +48,9 @@ public class UniformCost implements Search {
 
 				if(ans==false) { //if it hasn't been expanded then we can now check if there is a node in the Priority Queue with a higher Cost
 					if(!(info.pQueue.contains(temp))){
-					info.pQueue.add(temp);
-					info.pQueueSize();
-					expandedNode++;
+						info.pQueue.add(temp);
+						info.pQueueSize();
+						expandedNode++;
 					}
 				}
 			}

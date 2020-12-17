@@ -17,12 +17,9 @@ public class Info {
 		time = 0;
 		maxQueueSize = 0;
 	//	visited = new HashMap<Integer,BoardNode>();
-		
-		
-		
 	}
 	
-	public void  makePQueue(Comparator c) {   //creates a prioirty queue with a comparator as an argument to decidee the order in which the queue will organize elements
+	public void  makePQueue(Comparator c) {   //creates a priority queue with a comparator as an argument to decide the order in which the queue will organize elements
 		pQueue = new PriorityQueue<BoardNode>(c);
 	}
 	
