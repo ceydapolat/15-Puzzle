@@ -22,7 +22,7 @@ public class BoardNode {
 		this.parent = null;
 		this.cost = 0;
 		this.maxCost = 0;
-		this.stringState = stringBoard();
+		this.stringState = stringBoard(state);
 		this.direction = null;
 		for(int i=0; i<=3; i++) {
 			for(int j=0; j<=3; j++) {
@@ -36,7 +36,7 @@ public class BoardNode {
 		
 	}
 	
-	public String stringBoard() {   //method that returns a String version of the board
+	public String stringBoard(int[][]  state) {   //method that returns a String version of the board
 		StringBuilder sb = new StringBuilder();
 		for (int i =0; i<state.length; i++) {
 			for(int j = 0; j<state[i].length;j++ ) {
@@ -117,22 +117,10 @@ public class BoardNode {
 	public boolean isGaol() {				//checking if node is goal node
 		boolean result = false;
 		int [][] goal = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
-		BoardNode goalNode = new BoardNode(goal);
-		result = this.equals(goalNode);
+		result = this.getString().equals(stringBoard(goal));
 		return result;
 	}
-	
-	@Override
-	public boolean equals(Object object ) {    //equals for HashMap
-		
-		if(!(object instanceof BoardNode)) {
-			return false;
-		}
-		BoardNode check = (BoardNode) object;
-		
-		return check.getString().equals(this.getString());
-	}
-	
+
 	@Override
 	public int hashCode() {			//Hashcode generated from String version of board
 		int result = 17;
