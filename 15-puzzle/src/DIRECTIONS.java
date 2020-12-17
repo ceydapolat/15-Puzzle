@@ -1,0 +1,3 @@
+public enum DIRECTIONS {
+	LEFT,RIGHT,UP,DOWN
+}
