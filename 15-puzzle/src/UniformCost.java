@@ -28,7 +28,9 @@ public class UniformCost implements Search {
 		while(!(info.pQueue.isEmpty())) {
 			node = info.pQueue.poll();
 			info.incTime();
-			info.visited.put(node.hashCode(), node);
+			info.visited.add(node.getString());
+
+		//	info.visited.put(node.hashCode(), node);
 			if(node.isGaol()) {
 				PathActions p = new PathActions(initialNode,node,info, expandedNode); // class that creates a path from goal to start Node if goal is reached.
 				p.printPath(); // the path is then printed
@@ -39,7 +41,10 @@ public class UniformCost implements Search {
 			List<BoardNode> list = s.successor(node); // list of potential children
 
 			for(BoardNode temp: list) {
-				boolean ans = info.visited.containsKey(temp.hashCode()); //Uses temporary node's hashCode to check if it has been expanded or not.
+			//	boolean ans = info.visited.containsKey(temp.hashCode()); //Uses temporary node's hashCode to check if it has been expanded or not.
+
+				boolean ans = info.visited.contains(temp.getString());
+
 				if(ans==false) { //if it hasn't been expanded then we can now check if there is a node in the Priority Queue with a higher Cost
 					if(!(info.pQueue.contains(temp))){
 					info.pQueue.add(temp);
@@ -51,4 +56,6 @@ public class UniformCost implements Search {
 		}
 		return false;
 	}
+
+
 }

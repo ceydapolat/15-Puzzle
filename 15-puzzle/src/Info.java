@@ -1,9 +1,4 @@
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class Info {
 		//info class that is used in every search 
@@ -12,8 +7,8 @@ public class Info {
 	public PriorityQueue<BoardNode> pQueue;
 	public int time;
 	private int maxQueueSize;
-	public HashMap<Integer,BoardNode> visited; 
-	
+//	public HashMap<Integer,BoardNode> visited;
+	public ArrayList<String> visited = new ArrayList<String>();
 	
 	public Info() {
 		queue = new LinkedList<BoardNode>();
@@ -21,7 +16,7 @@ public class Info {
 		pQueue = new PriorityQueue<BoardNode>();
 		time = 0;
 		maxQueueSize = 0;
-		visited = new HashMap<Integer,BoardNode>();
+	//	visited = new HashMap<Integer,BoardNode>();
 		
 		
 		
