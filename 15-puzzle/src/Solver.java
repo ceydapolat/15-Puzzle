@@ -32,8 +32,8 @@ public class Solver {
 			System.out.println();
 
 			int optimumDepth = scanner.nextInt();
-	//		int [][] easy = {{1, 2, 3, 4}, {12, 14, 0, 5}, {11, 13, 15, 6}, {10, 9, 8, 7}};
-			int [][] easy = initialStateBuilder(optimumDepth);
+			int [][] easy = {{1, 3, 14, 5}, {12, 15, 2, 4}, {11, 13, 7, 6}, {10, 9, 8, 0}};
+	//		int [][] easy = initialStateBuilder(optimumDepth);
 			BoardNode node = new BoardNode(easy);
 
 
@@ -48,6 +48,7 @@ public class Solver {
 				System.out.println();
 				System.out.println("1. Misplaced Tiles");
 				System.out.println("2. Manhattan");
+				System.out.println("3. New Heuristic Function");
 				System.out.println();
 				int input3 = scanner.nextInt();
 
@@ -57,6 +58,11 @@ public class Solver {
 						break;
 					case 2:
 						search = new Astar(node,2);
+						break;
+					case 3:
+						search = new Astar(node,3);
+						break;
+
 				}
 			}
 
