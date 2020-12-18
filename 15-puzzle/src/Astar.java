@@ -3,14 +3,14 @@ import java.util.List;
 
 import javax.swing.text.html.HTMLDocument.Iterator;
 
-
-
 public class Astar implements Search {
 	//Astar class that creates the Astar search
 	private BoardNode initialNode;
 	private int i;
 	private int expandedNode;
-	
+
+	Info info = new Info();
+
 	public Astar(BoardNode node, int i) {
 		this.initialNode = node; 
 		this.i = i; // this int value helps determine which heuristic will be used
@@ -33,13 +33,24 @@ public boolean search() {
 		}
 	};
 
+
+	Comparator<BoardNode> f3Comparator = new Comparator<BoardNode>() {
+		@Override
+		public int compare(BoardNode a, BoardNode b) {
+			return (a.getMaxCost() + (manhattan(a) * manhattan(a)) - b.getMaxCost() - (manhattan(b) * manhattan(b)) );
+		}
+	};
+
 		//Astar search which creates a priority queue which sorts according to h(n)
-				Info info = new Info();
 				if(this.i==1) {
 					info.makePQueue(f1Comparator);
 				}
-				else {
+				else if(this.i==2) {
 					info.makePQueue(f2Comparator);
+				}
+				else{
+					info.makePQueue(f3Comparator);
+
 				}
 				 //making a priority queue with one of the heuristics determine the Comparator
 				BoardNode node = initialNode;
