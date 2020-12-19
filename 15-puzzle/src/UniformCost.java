@@ -23,6 +23,9 @@ public class UniformCost implements Search {
 
 		while(!(info.pQueue.isEmpty())) {
 
+			if (info.time % 5000 == 0)
+				System.out.println("Current # of expanded nodes : " + info.time);
+
 			node = info.pQueue.poll();
 			info.incTime();
 			info.visited.put(node.getString(), node.getMaxCost());
@@ -44,16 +47,48 @@ public class UniformCost implements Search {
 						ans=false;
 				}
 				if(ans) { //if it hasn't been expanded then we can now check if there is a node in the Priority Queue with a higher Cost
-					if(!(info.pQueue.contains(temp))){
-						info.pQueue.add(temp);
-						info.pQueueSize();
-					}
+
+						pqueueControl(temp);
 				}
 			}
 		}
 		return false;
 	}
 
+	public  void pqueueControl(BoardNode o) {
+
+		if (o != null) {
+			List es = new ArrayList(info.pQueue);
+
+			int currentmaxCost= o.getMaxCost();
+			int n=info.pQueue.size();
+			int i = n-1;
+			boolean control =true;
+
+			for(; i >0; i--) {
+
+				BoardNode temp= (BoardNode) es.get(i);
+				if(currentmaxCost-1 == temp.getMaxCost())
+					break;
+
+				if(o.getString().equals(temp.getString())){
+					control=false;
+
+					if(temp.getMaxCost() > o.getMaxCost()){
+						info.pQueue.remove(temp);
+						info.pQueue.add(o);
+					}
+					break;
+				}
+
+			}
+			if(control){
+				info.pQueue.add(o);
+				info.pQueueSize();
+
+			}
+		}
+	}
 
 
 }

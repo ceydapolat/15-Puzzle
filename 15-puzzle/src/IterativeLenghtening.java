@@ -43,18 +43,17 @@ public class IterativeLenghtening implements Search {
 
             for(BoardNode temp: list) {
                 boolean ans= true;
-                if(info.visited.containsKey(temp.getString())){
-                    if(temp.getMaxCost() >= (int)info.visited.get(temp.getString()))
-                        ans=false;
-                }
-                if(ans) { //if it hasn't been expanded then we can now check if there is a node in the Priority Queue with a higher Cost
-                    if(!(info.pQueue.contains(temp)) && temp.getMaxCost() <= limitCost){
+                if(!info.visited.containsKey(temp.getString())) {//if it hasn't been expanded then we can now check if there is a node in the Priority Queue with a higher Cost
+
+                    if (!(info.pQueue.contains(temp)) && temp.getMaxCost() <= limitCost) {
                         info.pQueue.add(temp);
                         info.pQueueSize();
                     }
+                    limitCost++;
                 }
-                limitCost++;
             }
+
+
         }
         return false;
     }

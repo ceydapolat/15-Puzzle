@@ -3,16 +3,11 @@ import java.util.*;
 
 public class Info {
 	//info class that is used in every search
-
 	public java.util.PriorityQueue<BoardNode> pQueue;
 	public int time;
 	private int maxQueueSize;
-	//Map<String , Integer> visited = new HashMap<String, Integer>();
-
 	HashMap visited = new HashMap();
 
-//	public ArrayList<BoardNode> visited = new ArrayList<BoardNode>();
-	
 	public Info() {
 		pQueue = new java.util.PriorityQueue<BoardNode>();
 		time = 0;
