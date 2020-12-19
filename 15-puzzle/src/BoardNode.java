@@ -90,8 +90,8 @@ public class BoardNode {
 	public List<BoardNode> getChildren(){ //getting the children
 		return children;
 	}
-	public void setChildren(List<BoardNode> childrens) { //setting the children
-		this.children =  childrens;
+	public void setChildren(List<BoardNode> children) { //setting the children
+		this.children =  children;
 	}
 	
 	public BoardNode createChild(int a, int b, int dirCost) {      //creating the child or possible states from current node

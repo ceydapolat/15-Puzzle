@@ -23,6 +23,7 @@ public class Solver {
 
 			System.out.println("1. UniformCost");
 			System.out.println("2. A*");
+			System.out.println("3. Iterative Lenghtening");
 			System.out.println();
 			Scanner scanner = new Scanner(System.in);
 			int input = scanner.nextInt();
@@ -70,6 +71,10 @@ public class Solver {
 						break;
 
 				}
+
+				case 3:
+					search = new IterativeLenghtening(node);
+					break;
 			}
 
 			System.out.println("The search will begin: ");
