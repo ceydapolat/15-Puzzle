@@ -71,6 +71,7 @@ public class Solver {
 						break;
 
 				}
+				break;
 
 				case 3:
 					search = new IterativeLenghtening(node);

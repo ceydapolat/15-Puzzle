@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -5,7 +6,6 @@ public class Astar implements Search {
 	//Astar class that creates the Astar search
 	private BoardNode initialNode;
 	private int i;
-	private int expandedNode;
 
 	Info info = new Info();
 
@@ -70,14 +70,14 @@ public boolean search() {
 
 
 					for(BoardNode temp: list) {
-//						boolean ans = info.visited.contains(temp.getString()); //Uses temporary node's hashCode to check if it has been expanded or not.
-						if(info.visited.containsKey(temp.getString())) { //if it hasn't been expanded then we can now check if there is a node in the Priority Queue with a higher Cost
-							if(!(info.pQueue.contains(temp))){
-								info.pQueue.add(temp);
-								info.pQueueSize();
-								expandedNode++;
-							}
-						}
+                        boolean ans= true;
+                        if(info.visited.containsKey(temp.getString())){
+                                ans=false;
+                        }
+                        if(ans) { //if it hasn't been expanded then we can now check if there is a node in the Priority Queue with a higher Cost
+
+                            pqueueControl(temp);
+                        }
 					}
 				}
 				return false;
@@ -113,4 +113,39 @@ public boolean search() {
 		}
 		return result;
 	}
+
+    public  void pqueueControl(BoardNode o) {
+
+        if (o != null) {
+            List es = new ArrayList(info.pQueue);
+
+            int currentmaxCost= o.getMaxCost();
+            int n=info.pQueue.size();
+            int i = n-1;
+            boolean control =true;
+
+            for(; i >0; i--) {
+
+                BoardNode temp= (BoardNode) es.get(i);
+                if(currentmaxCost-1 == temp.getMaxCost())
+                    break;
+
+                if(o.getString().equals(temp.getString())){
+                    control=false;
+
+                    if(temp.getMaxCost() > o.getMaxCost()){
+                        info.pQueue.remove(temp);
+                        info.pQueue.add(o);
+                    }
+                    break;
+                }
+
+            }
+            if(control){
+                info.pQueue.add(o);
+                info.pQueueSize();
+
+            }
+        }
+    }
 }
