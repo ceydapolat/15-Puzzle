@@ -7,12 +7,12 @@ public class PathActions {
 	// it then prints the path
 	List<BoardNode> path;
 	Info info; //info object is used in order to print details about space and time
-	int expandedNodeNum;
+//	int expandedNodeNum;
 
-	public PathActions(BoardNode initialNode, BoardNode goalNode, Info inf, int expandedNodeNum) {  //the arguments are goalNode, info and initialNode so a path can be found.
+	public PathActions(BoardNode initialNode, BoardNode goalNode, Info inf) {  //the arguments are goalNode, info and initialNode so a path can be found.
 		path = this.getPath(initialNode, goalNode);
 		this.info = inf;
-		this.expandedNodeNum = expandedNodeNum;
+//		this.expandedNodeNum = expandedNodeNum;
 	}
 	
 	
@@ -45,8 +45,8 @@ public class PathActions {
 			System.out.println(Arrays.deepToString(path.get(i).getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
 			System.out.println();
 		}
-		System.out.println("Time: " + info.getTime());
-		System.out.println("Space: " + info.getSpace());
-		System.out.println("Expanded node number: " + expandedNodeNum);
+		System.out.println("Time Complexity: " + info.getTime());
+		System.out.println("Space Complexity: " + info.getSpace());
+//		System.out.println("Expanded node number: " + expandedNodeNum);
 	}
 }
