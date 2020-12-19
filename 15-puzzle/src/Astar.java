@@ -1,8 +1,6 @@
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.text.html.HTMLDocument.Iterator;
-
 public class Astar implements Search {
 	//Astar class that creates the Astar search
 	private BoardNode initialNode;
@@ -60,9 +58,9 @@ public boolean search() {
 					node = info.pQueue.poll();
 					info.incTime();
 				//	info.visited.put(node.hashCode(), node);
-					info.visited.add(node.getString());
+					info.visited.put(node.getString(), node.getMaxCost());
 					if(node.isGaol()) {
-						PathActions p = new PathActions(initialNode,node,info,expandedNode); // class that creates a path from goal to start Node if goal is reached.
+						PathActions p = new PathActions(initialNode,node, info); // class that creates a path from goal to start Node if goal is reached.
 						p.printPath(); // the path is then printed
 						return true;
 					}
@@ -72,8 +70,8 @@ public boolean search() {
 
 
 					for(BoardNode temp: list) {
-						boolean ans = info.visited.contains(temp.getString()); //Uses temporary node's hashCode to check if it has been expanded or not.
-						if(ans==false) { //if it hasn't been expanded then we can now check if there is a node in the Priority Queue with a higher Cost
+//						boolean ans = info.visited.contains(temp.getString()); //Uses temporary node's hashCode to check if it has been expanded or not.
+						if(info.visited.containsKey(temp.getString())) { //if it hasn't been expanded then we can now check if there is a node in the Priority Queue with a higher Cost
 							if(!(info.pQueue.contains(temp))){
 								info.pQueue.add(temp);
 								info.pQueueSize();
@@ -108,6 +106,7 @@ public boolean search() {
 		for(int i=0; i<state.length; i++) {
 			for(int j=0; j<state.length; j++) {
 				int value = state[i][j];
+
 				int maxValue = Math.max(Math.abs(i - node.getRow(value)), Math.abs(j - node.getCol(value)));
 				result += maxValue;
 			}

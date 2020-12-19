@@ -41,6 +41,7 @@ public class BoardNode {
 		for (int i =0; i<state.length; i++) {
 			for(int j = 0; j<state[i].length;j++ ) {
 				sb.append(state[i][j]);
+				sb.append("-");
 			}
 		}
 		return sb.toString();
@@ -168,19 +169,7 @@ public class BoardNode {
 		}
 			return col;
 	}
-	
-	public BoardNode duplicateNode() {  //create duplicate Node
-		BoardNode dup = new BoardNode(this.getMatrix());
-		dup.setParent(this.getParent());
-		dup.setDir(this.getDir());
-		dup.setCost(this.getCost());
-		dup.setDepth(this.getDepth());
-		dup.setMaxCost(this.getCost());
-		dup.setChildren(this.getChildren());
-		return dup;
-		
-		
-	}
+
 	
 	
 }
