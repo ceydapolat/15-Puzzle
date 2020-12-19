@@ -5,9 +5,7 @@ public class Successor {
 
 	String[] directions = {"UP", "RIGHT", "LEFT", "DOWN", "UPPER_RIGHT", "UPPER_LEFT", "LOWER_LEFT", "LOWER_RIGHT"};
 
-	public Successor() {
-		
-	}
+	public Successor() {}
 	
 	public List<BoardNode> successor(BoardNode node) {
 		//successor function that takes a state and returns a list of possible states that can be reached

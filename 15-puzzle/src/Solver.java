@@ -32,7 +32,13 @@ public class Solver {
 			System.out.println();
 
 			int optimumDepth = scanner.nextInt();
-			int [][] easy = {{1, 3, 14, 5}, {12, 15, 2, 4}, {11, 13, 7, 6}, {10, 9, 8, 0}};
+//			int [][] easy = {{1, 3, 14, 5}, {12, 15, 2, 4}, {11, 13, 7, 6}, {10, 9, 8, 0}};   //10
+
+			int [][] easy = {{1, 2, 13, 4}, {12, 0, 14, 3}, {11, 15, 5, 6}, {10, 9, 8, 7}};   //4
+
+//			int [][] easy = {{1, 2, 0, 4}, {13, 3, 14, 5}, {11, 12, 8, 6}, {15, 10, 9, 7}};   //4
+
+
 	//		int [][] easy = initialStateBuilder(optimumDepth);
 			BoardNode node = new BoardNode(easy);
 
@@ -44,7 +50,7 @@ public class Solver {
 				break;
 			case 2:  //final case for A* which provides options for both Heuristics
 				System.out.println();
-				System.out.println("This is the A* algorithm, please pick a heuristic: ");
+				System.out.println("Please pick a heuristic: ");
 				System.out.println();
 				System.out.println("1. Misplaced Tiles");
 				System.out.println("2. Manhattan");
@@ -66,10 +72,6 @@ public class Solver {
 				}
 			}
 
-			System.out.println("Okay! Ready to Go!");
-			System.out.println("Hit any key!");
-			String input4 = scanner.next();
-			System.out.println();
 			System.out.println("The search will begin: ");
 			search.search(); //the search starts
 			System.out.println("Do you want to continue?");
@@ -143,7 +145,7 @@ public class Solver {
 				}
 			}
 
-			else if(row != 0 && randomNum == 3) {  //LEFT
+			else if(col != 0 && randomNum == 3) {  //LEFT
 				if(previousDir != 2){
 					if(firstAction)
 						firstAction = false;
