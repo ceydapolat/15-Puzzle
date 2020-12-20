@@ -3,8 +3,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BoardNode {
-		
-	private  int[][]  state = new int [4][4];
+
+	private String state;
 	private List<BoardNode> children;
 	private BoardNode parent;
 	private int depth;
@@ -15,24 +15,20 @@ public class BoardNode {
 	private int cost;
 	private int maxCost;
 	
-	public BoardNode(int [][] state) {
+	public BoardNode(String state, int pathCost) {
 		this.state = state; // the state
 		this.depth = 1; // the depth 
 		this.children = new ArrayList<BoardNode>(); //the children of the node
 		this.parent = null;
-		this.cost = 0;
-		this.maxCost = 0;
-		this.stringState = stringBoard(state);
+//		this.cost = 0;
+		this.maxCost = pathCost;
+		this.stringState = state;
 		this.direction = null;
-		for(int i=0; i<=3; i++) {
-			for(int j=0; j<=3; j++) {
-				if(state[i][j]==0) {
-					this.blankrow = i;
-					this.blankcol = j;
-					break;
-				}
-			}
-		}
+
+		int [] blankCoordinates = getBlankCoordinates(state);
+		this.blankrow = blankCoordinates[0];
+		this.blankcol = blankCoordinates[1];
+
 		
 	}
 	
@@ -50,7 +46,7 @@ public class BoardNode {
 	public void addChild(BoardNode child) { //adding a Child to the node
 		child.setParent(this);
 		child.setDepth(this.getDepth()+1);
-		child.setMaxCost(child.getCost());
+//		child.setMaxCost(child.getCost());
 		this.children.add(child);
 	
 	}
@@ -79,7 +75,14 @@ public class BoardNode {
 	}
 	
 	public int [][] getMatrix(){ //getting the state in array form
-		return state;
+
+		String[] tokens = this.state.split("-");
+		int [][] result = new int[4][4];
+
+		for(int i =0; i<16; i++)
+			result[i/4][i%4] = Integer.parseInt(tokens[i]);
+
+		return result;
 	}
 	
 	public int getCost() { //getting the cost of last move
@@ -94,20 +97,57 @@ public class BoardNode {
 		this.children =  children;
 	}
 	
-	public BoardNode createChild(int a, int b, int dirCost) {      //creating the child or possible states from current node
-		int temp[][] = new int[state.length][state.length];
-		for(int i=0; i<state.length; i++)
-			  for(int j=0; j<state[i].length; j++)
-			    temp[i][j]=state[i][j];
-		temp[blankrow][blankcol] = temp[a][b];
-		int cost = dirCost;		//state[a][b];
-		temp[a][b] = 0;
-		BoardNode child = new BoardNode(temp);
-		child.setCost(cost);							//adding to Child to parent
+	public BoardNode createChild(String [] arr) {      //creating the child or possible states from current node
+//		int temp[][] = new int[state.length][state.length];
+//		for(int i=0; i<state.length; i++)
+//			  for(int j=0; j<state[i].length; j++)
+//			    temp[i][j]=state[i][j];
+//		temp[blankrow][blankcol] = temp[a][b];
+
+//		int cost = dirCost;		//state[a][b];
+//		temp[a][b] = 0;
+
+		BoardNode child = new BoardNode(arr[0], Integer.parseInt(arr[1]));
+//		child.setMaxCost(arr[1]);							//adding to Child to parent
 		addChild(child);
 		return child;
 	}
-	
+
+	public String [] createStates(int a, int b, int dirCost){
+
+		String [] arr = new String[2];
+
+		int temp[][] = getMatrix();
+
+		temp[blankrow][blankcol] = temp[a][b];
+		temp[a][b] = 0;
+
+		arr[0]=stringBoard(temp);
+		arr[1]= Integer.toString(dirCost);
+		return arr;
+	}
+
+
+//	public String[] createChild(int a, int b, int dirCost) {      //creating the child or possible states from current node
+//		String [] arr = new String[2];
+//		int temp[][] = new int[state.length][state.length];
+//		for(int i=0; i<state.length; i++)
+//			for(int j=0; j<state[i].length; j++)
+//				temp[i][j]=state[i][j];
+//		temp[blankrow][blankcol] = temp[a][b];
+//
+//		String state = stringBoard(temp);
+//		arr[0]=state;
+//		arr[1]= Integer.toString(dirCost);
+//		return  arr;
+////		int cost = dirCost;		//state[a][b];
+////		temp[a][b] = 0;
+////		BoardNode child = new BoardNode(temp);
+////		child.setCost(cost);							//adding to Child to parent
+////		addChild(child);
+////		return child;
+//	}
+
 	public void setDir(String d) {				//setting the Direction moved
 		this.direction = d;
 	}
@@ -170,6 +210,16 @@ public class BoardNode {
 			return col;
 	}
 
-	
+
+	public int[] getBlankCoordinates(String state){
+		int [] result= new int[2];
+		String[] tokens = state.split("-");
+		int index = Arrays.asList(tokens).lastIndexOf("0");
+
+		result[0]=index/4;
+		result[1]=index%4;
+
+		return  result;
+	}
 	
 }

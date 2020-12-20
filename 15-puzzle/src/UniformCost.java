@@ -8,10 +8,16 @@ public class UniformCost implements Search {
 		this.initialNode = node;
 	}
 
-	private class gComparator implements Comparator<BoardNode>{
+//	private class gComparator implements Comparator<BoardNode>{
+//
+//		public int compare(BoardNode a, BoardNode b) {
+//			return a.getMaxCost() - b.getMaxCost();
+//		}
+//	}
 
-		public int compare(BoardNode a, BoardNode b) {
-			return a.getMaxCost() - b.getMaxCost();
+	private class gComparator implements Comparator<String[]>{
+		public int compare(String[] a, String [] b) {
+			return Integer.parseInt(a[1] )- Integer.parseInt(b[1]);
 		}
 	}
 
@@ -19,7 +25,10 @@ public class UniformCost implements Search {
 		//UniformCost search which creates a priority queue which sorts according to g(n)
 		info.makePQueue(new gComparator()); //making a priority queue with gComparator
 		BoardNode node = initialNode;
-		info.pQueue.add(node);
+		String [] x= {node.getString(), String.valueOf(0)};
+		info.pQueue.add(x);
+		int parentCost=0;
+
 //		info.tempQueue.put(node.getString(), node);  //temporary HashMap for pqueue
 
 
@@ -28,7 +37,12 @@ public class UniformCost implements Search {
 			if (info.time % 5000 == 0)
 				System.out.println("Current # of expanded nodes : " + info.time + "queue size: " + info.getSpace()) ;
 
-			node = info.pQueue.poll();
+			String [] nodeArr = info.pQueue.poll();
+//			parentCost = Integer.parseInt(nodeArr[1]);
+//			BoardNode node2 = node.createChild(nodeArr);
+//			node=node2;
+
+			node = node.createChild(nodeArr);
 //			info.tempQueue.remove(node);
 			info.incTime();
 			info.visited.put(node.getString(), node.getMaxCost());
@@ -40,12 +54,12 @@ public class UniformCost implements Search {
 			}
 
 			Successor s = new Successor(); // Successor class created to provide next possible moves from current node
-			List<BoardNode> list = s.successor(node); // list of potential children
+			List<String[]> list = s.successor(node, Integer.parseInt(nodeArr[1])); // list of potential children
 
-			for(BoardNode temp: list) {
+			for(String [] temp: list) {
 
 				boolean ans= true;
-				if(!info.visited.containsKey(temp.getString())){
+				if(!info.visited.containsKey(temp[0])){
 						info.pQueue.add(temp);
 						info.pQueueSize();
 //

@@ -35,14 +35,18 @@ public class Solver {
 			int optimumDepth = scanner.nextInt();
 //			int [][] easy = {{1, 3, 14, 5}, {12, 15, 2, 4}, {11, 13, 7, 6}, {10, 9, 8, 0}};   //10
 
-			int [][] easy = {{1, 2, 13, 4}, {12, 0, 14, 3}, {11, 15, 5, 6}, {10, 9, 8, 7}};   //4
+//			int [][] easy = {{0, 1, 3, 4}, {12, 13, 2, 5}, {11, 14, 15, 6}, {10, 9, 8, 7}};   //1. input
+			int [][] easy = {{1, 3, 5, 4}, {2, 13, 14, 15}, {11, 12, 9, 6}, {10, 8, 7, 0}};   //2. input
+//			int [][] easy = {{1, 13, 3, 4}, {12, 11, 2, 5}, {9, 8, 15, 7}, {10, 6, 14, 0}};   //3. input
+
+//			int [][] easy = {{1, 2, 13, 4}, {12, 0, 14, 3}, {11, 15, 5, 6}, {10, 9, 8, 7}};   //4
 
 //			int [][] easy = {{1, 2, 0, 4}, {13, 3, 14, 5}, {11, 12, 8, 6}, {15, 10, 9, 7}};   //4
+//			int [][] easy = {{1,2,3,4},{12,13,14,5},{11,8,15,6},{10,9,0,7}};   //4
 
 
-	//		int [][] easy = initialStateBuilder(optimumDepth);
-			BoardNode node = new BoardNode(easy);
-
+//			int [][] easy = initialStateBuilder(optimumDepth);
+			BoardNode node = new BoardNode(generateStringState(easy), 0);
 
 			switch(input) {    //switch is used to determine what search and difficulty to use
 
@@ -61,20 +65,20 @@ public class Solver {
 
 				switch(input3){
 					case 1:
-						search = new Astar(node,1);
+//						search = new Astar(node,1);
 						break;
 					case 2:
-						search = new Astar(node,2);
+//						search = new Astar(node,2);
 						break;
 					case 3:
-						search = new Astar(node,3);
+//						search = new Astar(node,3);
 						break;
 
 				}
 				break;
 
 				case 3:
-					search = new IterativeLenghtening(node);
+//					search = new IterativeLenghtening(node);
 					break;
 			}
 
@@ -241,6 +245,17 @@ public class Solver {
 			}
 
 		return state;
+	}
+
+	public static String generateStringState(int[][] state) {   //method that returns a String version of the board
+		StringBuilder sb = new StringBuilder();
+		for (int i =0; i<state.length; i++) {
+			for(int j = 0; j<state[i].length;j++ ) {
+				sb.append(state[i][j]);
+				sb.append("-");
+			}
+		}
+		return sb.toString();
 	}
 
 	
