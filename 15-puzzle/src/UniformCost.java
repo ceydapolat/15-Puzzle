@@ -20,13 +20,16 @@ public class UniformCost implements Search {
 		info.makePQueue(new gComparator()); //making a priority queue with gComparator
 		BoardNode node = initialNode;
 		info.pQueue.add(node);
+//		info.tempQueue.put(node.getString(), node);  //temporary HashMap for pqueue
+
 
 		while(!(info.pQueue.isEmpty())) {
 
 			if (info.time % 5000 == 0)
-				System.out.println("Current # of expanded nodes : " + info.time);
+				System.out.println("Current # of expanded nodes : " + info.time + "queue size: " + info.getSpace()) ;
 
 			node = info.pQueue.poll();
+//			info.tempQueue.remove(node);
 			info.incTime();
 			info.visited.put(node.getString(), node.getMaxCost());
 
@@ -42,53 +45,72 @@ public class UniformCost implements Search {
 			for(BoardNode temp: list) {
 
 				boolean ans= true;
-				if(info.visited.containsKey(temp.getString())){
-					if(temp.getMaxCost() >= (int)info.visited.get(temp.getString()))
-						ans=false;
-				}
-				if(ans) { //if it hasn't been expanded then we can now check if there is a node in the Priority Queue with a higher Cost
+				if(!info.visited.containsKey(temp.getString())){
+						info.pQueue.add(temp);
+						info.pQueueSize();
+//
+//					if(info.tempQueue.containsKey(temp.getString())){
+//
+//						BoardNode tempnode = (BoardNode) info.tempQueue.get(temp.getString());
+//						if(temp.getMaxCost() < tempnode.getMaxCost()){
+//							info.pQueue.remove(tempnode);
+//							info.pQueue.add(temp);
+//							info.tempQueue.put(temp.getString(), temp);
+//
+//						}
+//
+//
+//					}
+//					else{
+//						info.pQueue.add(temp);
+//						info.pQueueSize();
+//						info.tempQueue.put(temp.getString(), temp);
+//					}
 
-						pqueueControl(temp);
+//						pqueueControl(temp);
+
+
 				}
+
 			}
 		}
 		return false;
 	}
 
-	public  void pqueueControl(BoardNode o) {
-
-		if (o != null) {
-			List es = new ArrayList(info.pQueue);
-
-			int currentmaxCost= o.getMaxCost();
-			int n=info.pQueue.size();
-			int i = n-1;
-			boolean control =true;
-
-			for(; i >0; i--) {
-
-				BoardNode temp= (BoardNode) es.get(i);
-				if(currentmaxCost-1 == temp.getMaxCost())
-					break;
-
-				if(o.getString().equals(temp.getString())){
-					control=false;
-
-					if(temp.getMaxCost() > o.getMaxCost()){
-						info.pQueue.remove(temp);
-						info.pQueue.add(o);
-					}
-					break;
-				}
-
-			}
-			if(control){
-				info.pQueue.add(o);
-				info.pQueueSize();
-
-			}
-		}
-	}
+//	public  void pqueueControl(BoardNode o) {
+//
+//		if (o != null) {
+//			List es = new ArrayList(info.pQueue);
+//
+//			int currentmaxCost= o.getMaxCost();
+//			int n=info.pQueue.size();
+//			int i = n-1;
+//			boolean control =true;
+//
+//			for(; i >0; i--) {
+//
+//				BoardNode temp= (BoardNode) es.get(i);
+//				if(currentmaxCost-1 == temp.getMaxCost())
+//					break;
+//
+//				if(o.getString().equals(temp.getString())){
+//					control=false;
+//
+//					if(temp.getMaxCost() > o.getMaxCost()){
+//						info.pQueue.remove(temp);
+//						info.pQueue.add(o);
+//					}
+//					break;
+//				}
+//
+//			}
+//			if(control){
+//				info.pQueue.add(o);
+//				info.pQueueSize();
+//
+//			}
+//		}
+//	}
 
 
 }
