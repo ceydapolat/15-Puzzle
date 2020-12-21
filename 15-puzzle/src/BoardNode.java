@@ -1,42 +1,40 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class BoardNode {
 		
-	private  int[][]  state = new int [4][4];
+	private  int[][]  state;
 	private List<BoardNode> children;
 	private BoardNode parent;
 	private int depth;
-	private int blankrow;
-	private int blankcol;
+	private int blankRow;
+	private int blankCol;
 	private String direction;
 	private String stringState;
 	private int cost;
 	private int maxCost;
 	
 	public BoardNode(int [][] state) {
-		this.state = state; // the state
-		this.depth = 1; // the depth 
+		this.state = state;
+		this.depth = 1;
 		this.children = new ArrayList<BoardNode>(); //the children of the node
 		this.parent = null;
 		this.cost = 0;
 		this.maxCost = 0;
-		this.stringState = stringBoard(state);
+		this.stringState = createStringStateBoard(state);
 		this.direction = null;
 		for(int i=0; i<=3; i++) {
 			for(int j=0; j<=3; j++) {
 				if(state[i][j]==0) {
-					this.blankrow = i;
-					this.blankcol = j;
+					this.blankRow = i;
+					this.blankCol = j;
 					break;
 				}
 			}
 		}
-		
 	}
 	
-	public String stringBoard(int[][]  state) {   //method that returns a String version of the board
+	private String createStringStateBoard(int[][]  state) {   //method that returns a String version of the board
 		StringBuilder sb = new StringBuilder();
 		for (int i =0; i<state.length; i++) {
 			for(int j = 0; j<state[i].length;j++ ) {
@@ -47,85 +45,74 @@ public class BoardNode {
 		return sb.toString();
 	}
 	
-	public void addChild(BoardNode child) { //adding a Child to the node
-		child.setParent(this);
-		child.setDepth(this.getDepth()+1);
-		child.setMaxCost(child.getCost());
+	private void addChild(BoardNode child) { //adding a Child to the node
+		child.setParent(this); //set parent of the child as this node
+		child.setDepth(this.getDepth()+1); //increment the depth
+		child.setPathCost(child.getCost());
 		this.children.add(child);
 	
 	}
 	
-	public void setParent(BoardNode parent) { //setting the Parent of the node
+	private void setParent(BoardNode parent) {
 		this.parent = parent;
 	}
 	
-	public void setDepth(int depth) {  //setting the Depth of the node
+	private void setDepth(int depth) {
 		this.depth = depth;
 	}
-	public int getDepth() {  //getting the Depth of the node
+	public int getDepth() {
 		return depth;
 	}
 	
-	public BoardNode getParent() {  //getting the Parent of the node
+	public BoardNode getParent() {
 		return parent;
 	}
 	
-	public int getRowBlank() {  //getting the Row of the zero tile
-		return blankrow;
+	public int getRowBlank() {
+		return blankRow;
 	}
 	
-	public int getColBlank() { //getting the Column of the zero tile
-		return blankcol;
+	public int getColBlank() {
+		return blankCol;
 	}
 	
-	public int [][] getMatrix(){ //getting the state in array form
+	public int [][] getMatrix(){
 		return state;
 	}
 	
-	public int getCost() { //getting the cost of last move
+	public int getCost() {
 		return this.cost;
 	}
 	
-	
-	public List<BoardNode> getChildren(){ //getting the children
-		return children;
-	}
-	public void setChildren(List<BoardNode> children) { //setting the children
-		this.children =  children;
-	}
-	
-	public BoardNode createChild(int a, int b, int dirCost) {      //creating the child or possible states from current node
-		int temp[][] = new int[state.length][state.length];
+	public BoardNode createChild(int a, int b, int dirCost) { //creating the child or possible states from current node
+		int[][] temp = new int[state.length][state.length];
+
 		for(int i=0; i<state.length; i++)
-			  for(int j=0; j<state[i].length; j++)
-			    temp[i][j]=state[i][j];
-		temp[blankrow][blankcol] = temp[a][b];
-		int cost = dirCost;		//state[a][b];
+			System.arraycopy(state[i], 0, temp[i], 0, state[i].length);
+
+		temp[blankRow][blankCol] = temp[a][b];
+		int cost = dirCost;
 		temp[a][b] = 0;
-		BoardNode child = new BoardNode(temp);
-		child.setCost(cost);							//adding to Child to parent
-		addChild(child);
+		BoardNode child = new BoardNode(temp); //create child as a node object
+		child.setCost(cost);
+		addChild(child); // add child to the parent
 		return child;
 	}
 	
 	public void setDir(String d) {				//setting the Direction moved
 		this.direction = d;
 	}
+
 	public String getDir() {				//getting the direction moved
 		return direction;
 	}
 	
-	public boolean isGaol() {				//checking if node is goal node
-		boolean result = false;
-		int [][] goal = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
-		result = this.getString().equals(stringBoard(goal));
-		return result;
-	}
+	public boolean isGoal() { // Check if goal state has been reached
+		boolean result;
+		int [][] goal = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}}; //goal state which we want to reach
 
-	@Override
-	public int hashCode() {			//Hashcode generated from String version of board
-		int result = 17;
-		result = 37 * result + this.getString().hashCode();
+		result = this.getString().equals(createStringStateBoard(goal));
+
 		return result;
 	}
 	
@@ -133,18 +120,19 @@ public class BoardNode {
 		return stringState;
 	}
 	
-	public void setCost(int i) {					//setting cost
+	private void setCost(int i) {
 		this.cost = i;
 	}
-	public void setMaxCost(int i) {
-		this.maxCost = this.getParent().getMaxCost() + i;			//setting MaxCost
+
+	private void setPathCost(int i) { //set path cost of the current child node
+		this.maxCost = this.getParent().getMaxCost() + i;
 	}
 	
 	public int getMaxCost() { //getting the current MaxCode to get to current Node
 		return maxCost;
 	}
 	
-	public int getRow(int value) {				//getting the Row of a value in goalState
+	public int getRow(int value) {		// get row value of the given node value
 		int row = 0;
 		int [][] goal = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
 		for(int i=0; i<=3; i++) {
@@ -157,7 +145,7 @@ public class BoardNode {
 			return row;
 	}
 
-	public int getCol(int value) {			//getting the Column of value in goal state used for Manhattan computation
+	public int getCol(int value) {		// get the column value of the given node value
 		int col = 0;
 		int [][] goal = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
 		for(int i=0; i<=3; i++) {

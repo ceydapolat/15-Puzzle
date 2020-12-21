@@ -20,8 +20,7 @@ public class UniformCost implements Search {
 		info.makePQueue(new gComparator()); //making a priority queue with gComparator
 		BoardNode node = initialNode;
 		info.pQueue.add(node);
-//		info.tempQueue.put(node.getString(), node);  //temporary HashMap for pqueue
-
+		info.tempQueue.put(node.getString(), node);  //temporary HashMap for pqueue
 
 		while(!(info.pQueue.isEmpty())) {
 
@@ -29,43 +28,40 @@ public class UniformCost implements Search {
 				System.out.println("Current # of expanded nodes : " + info.time + "queue size: " + info.getSpace()) ;
 
 			node = info.pQueue.poll();
-//			info.tempQueue.remove(node);
-			info.incTime();
+			info.tempQueue.remove(node);
+			info.time++;
 			info.visited.put(node.getString(), node.getMaxCost());
 
-			if(node.isGaol()) {
-				PathActions p = new PathActions(initialNode,node,info); // class that creates a path from goal to start Node if goal is reached.
+			if(node.isGoal()) {
+				BoardActions p = new BoardActions(initialNode,node,info); // class that creates a path from goal to start Node if goal is reached.
 				p.printPath(); // the path is then printed
 				return true;
 			}
 
-			Successor s = new Successor(); // Successor class created to provide next possible moves from current node
-			List<BoardNode> list = s.successor(node); // list of potential children
+			Controller s = new Controller(); // Successor class created to provide next possible moves from current node
+			List<BoardNode> list = s.controller(node); // list of potential children
 
 			for(BoardNode temp: list) {
 
-				boolean ans= true;
 				if(!info.visited.containsKey(temp.getString())){
-						info.pQueue.add(temp);
-						info.pQueueSize();
-//
-//					if(info.tempQueue.containsKey(temp.getString())){
-//
-//						BoardNode tempnode = (BoardNode) info.tempQueue.get(temp.getString());
-//						if(temp.getMaxCost() < tempnode.getMaxCost()){
-//							info.pQueue.remove(tempnode);
-//							info.pQueue.add(temp);
-//							info.tempQueue.put(temp.getString(), temp);
-//
-//						}
-//
-//
-//					}
-//					else{
 //						info.pQueue.add(temp);
 //						info.pQueueSize();
-//						info.tempQueue.put(temp.getString(), temp);
-//					}
+
+					if(info.tempQueue.containsKey(temp.getString())){
+
+						BoardNode tempnode = (BoardNode) info.tempQueue.get(temp.getString());
+						if(temp.getMaxCost() < tempnode.getMaxCost()){
+							info.pQueue.remove(tempnode);
+							info.pQueue.add(temp);
+							info.tempQueue.put(temp.getString(), temp);
+
+						}
+					}
+					else{
+						info.pQueue.add(temp);
+						info.pQueueSize();
+						info.tempQueue.put(temp.getString(), temp);
+					}
 
 //						pqueueControl(temp);
 
