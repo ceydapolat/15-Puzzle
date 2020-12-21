@@ -10,7 +10,7 @@ public class Solver {
 		IterativeLenghtening ils= null;
 
 		boolean con = true;
-		while(con==true)	{  //loop for continuing to program
+		while(con)	{  //loop for continuing to program
 			System.out.println();
 			System.out.println("Welcome to diagonal 15 puzzle");
 			System.out.println("Please chose an Algorithm below:"); // ask the user which algorithm to run
