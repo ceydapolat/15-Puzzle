@@ -11,7 +11,6 @@ public class Astar implements Search {
 		this.initialNode = node; 
 		this.heuristic = heuristic; // this int value helps determine which heuristic will be used
 	}
-
 	
     public boolean search() {
 
@@ -96,6 +95,8 @@ public class Astar implements Search {
 		int [][] state = node.getMatrix();
 		for(int i=0; i<state.length; i++) {
 			for(int j=0; j<state.length; j++) {
+			    if(state[i][j] == 0)
+			        continue;
 				if(goal[i][j]!=state[i][j]) {
 					result += 1;
 				}
@@ -110,6 +111,8 @@ public class Astar implements Search {
 		for(int i=0; i<state.length; i++) {
 			for(int j=0; j<state.length; j++) {
 				int value = state[i][j];
+                if(value == 0)
+                    continue;
 
 				int maxValue = Math.max(Math.abs(i - node.getRow(value)), Math.abs(j - node.getCol(value)));
 				result += maxValue;

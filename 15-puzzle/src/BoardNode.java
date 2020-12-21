@@ -50,7 +50,6 @@ public class BoardNode {
 		child.setDepth(this.getDepth()+1); //increment the depth
 		child.setPathCost(child.getCost());
 		this.children.add(child);
-	
 	}
 	
 	private void setParent(BoardNode parent) {

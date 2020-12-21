@@ -49,7 +49,6 @@ public class UniformCost implements Search {
 							info.pQueue.remove(tempNode); // remove temporary node from temporary queue if current node has smaller cost
 							info.pQueue.add(boardNode);   // add current node to the priority queue
 							info.tempQueue.put(boardNode.getString(), boardNode); //add new node to the temporary queue
-
 						}
 					}
 					else{ // if node is not visited before
