@@ -8,16 +8,10 @@ public class UniformCost implements Search {
 		this.initialNode = node;
 	}
 
-//	private class gComparator implements Comparator<BoardNode>{
-//
-//		public int compare(BoardNode a, BoardNode b) {
-//			return a.getMaxCost() - b.getMaxCost();
-//		}
-//	}
+	private class gComparator implements Comparator<BoardNode>{
 
-	private class gComparator implements Comparator<String[]>{
-		public int compare(String[] a, String [] b) {
-			return Integer.parseInt(a[1] )- Integer.parseInt(b[1]);
+		public int compare(BoardNode a, BoardNode b) {
+			return a.getMaxCost() - b.getMaxCost();
 		}
 	}
 
@@ -25,61 +19,49 @@ public class UniformCost implements Search {
 		//UniformCost search which creates a priority queue which sorts according to g(n)
 		info.makePQueue(new gComparator()); //making a priority queue with gComparator
 		BoardNode node = initialNode;
-		String [] x= {node.getString(), String.valueOf(0)};
-		info.pQueue.add(x);
-		int parentCost=0;
-
-//		info.tempQueue.put(node.getString(), node);  //temporary HashMap for pqueue
-
+		info.pQueue.add(node);
+		info.tempQueue.put(node.getString(), node);  //temporary HashMap for pqueue
 
 		while(!(info.pQueue.isEmpty())) {
 
 			if (info.time % 5000 == 0)
 				System.out.println("Current # of expanded nodes : " + info.time + "queue size: " + info.getSpace()) ;
 
-			String [] nodeArr = info.pQueue.poll();
-//			parentCost = Integer.parseInt(nodeArr[1]);
-//			BoardNode node2 = node.createChild(nodeArr);
-//			node=node2;
-
-			node = node.createChild(nodeArr);
-//			info.tempQueue.remove(node);
-			info.incTime();
+			node = info.pQueue.poll();
+			info.tempQueue.remove(node);
+			info.time++;
 			info.visited.put(node.getString(), node.getMaxCost());
 
-			if(node.isGaol()) {
-				PathActions p = new PathActions(initialNode,node,info); // class that creates a path from goal to start Node if goal is reached.
+			if(node.isGoal()) {
+				BoardActions p = new BoardActions(initialNode,node,info); // class that creates a path from goal to start Node if goal is reached.
 				p.printPath(); // the path is then printed
 				return true;
 			}
 
-			Successor s = new Successor(); // Successor class created to provide next possible moves from current node
-			List<String[]> list = s.successor(node, Integer.parseInt(nodeArr[1])); // list of potential children
+			Controller s = new Controller(); // Successor class created to provide next possible moves from current node
+			List<BoardNode> list = s.controller(node); // list of potential children
 
-			for(String [] temp: list) {
+			for(BoardNode temp: list) {
 
-				boolean ans= true;
-				if(!info.visited.containsKey(temp[0])){
-						info.pQueue.add(temp);
-						info.pQueueSize();
-//
-//					if(info.tempQueue.containsKey(temp.getString())){
-//
-//						BoardNode tempnode = (BoardNode) info.tempQueue.get(temp.getString());
-//						if(temp.getMaxCost() < tempnode.getMaxCost()){
-//							info.pQueue.remove(tempnode);
-//							info.pQueue.add(temp);
-//							info.tempQueue.put(temp.getString(), temp);
-//
-//						}
-//
-//
-//					}
-//					else{
+				if(!info.visited.containsKey(temp.getString())){
 //						info.pQueue.add(temp);
 //						info.pQueueSize();
-//						info.tempQueue.put(temp.getString(), temp);
-//					}
+
+					if(info.tempQueue.containsKey(temp.getString())){
+
+						BoardNode tempnode = (BoardNode) info.tempQueue.get(temp.getString());
+						if(temp.getMaxCost() < tempnode.getMaxCost()){
+							info.pQueue.remove(tempnode);
+							info.pQueue.add(temp);
+							info.tempQueue.put(temp.getString(), temp);
+
+						}
+					}
+					else{
+						info.pQueue.add(temp);
+						info.pQueueSize();
+						info.tempQueue.put(temp.getString(), temp);
+					}
 
 //						pqueueControl(temp);
 

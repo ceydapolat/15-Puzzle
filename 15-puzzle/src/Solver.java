@@ -1,23 +1,17 @@
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import javax.swing.event.ListSelectionEvent;
-
 public class Solver {
 
 	public static void main(String[] args) {
-		
-		// All the boards.
 
-		// search waiting to be initialized
-		Search search = null;
+		Search search = null;   //search object that will be initialized is created
 		
-		// Simple UI which prompts the User for an algorithm and difficulty level
 		boolean con = true;
-		while(con==true)	{  //the loop keeps going till User says no
+		while(con==true)	{  //loop for continuing to program
 			System.out.println();
-			System.out.println("Welcome to 8 puzzle");    //Below are the options asking User for which search and what difficulty to pick
-			System.out.println("Please chose an Algorithm below:");
+			System.out.println("Welcome to diagonal 15 puzzle");
+			System.out.println("Please chose an Algorithm below:"); // ask the user which algorithm to run
 			System.out.println();
 			System.out.println();
 
@@ -28,75 +22,80 @@ public class Solver {
 			Scanner scanner = new Scanner(System.in);
 			int input = scanner.nextInt();
 
-			System.out.println("Choose depth(2, 4, 6,..., 26, 28)");
+			System.out.println("Choose depth(2, 4, 6,..., 26, 28)");    //ask the user what the optimum solution depth should be generated
 
 			System.out.println();
 
-			int optimumDepth = scanner.nextInt();
-//			int [][] easy = {{1, 3, 14, 5}, {12, 15, 2, 4}, {11, 13, 7, 6}, {10, 9, 8, 0}};   //10
-
-//			int [][] easy = {{0, 1, 3, 4}, {12, 13, 2, 5}, {11, 14, 15, 6}, {10, 9, 8, 7}};   //1. input
-			int [][] easy = {{1, 3, 5, 4}, {2, 13, 14, 15}, {11, 12, 9, 6}, {10, 8, 7, 0}};   //2. input
-//			int [][] easy = {{1, 13, 3, 4}, {12, 11, 2, 5}, {9, 8, 15, 7}, {10, 6, 14, 0}};   //3. input
-
-//			int [][] easy = {{1, 2, 13, 4}, {12, 0, 14, 3}, {11, 15, 5, 6}, {10, 9, 8, 7}};   //4
-
-//			int [][] easy = {{1, 2, 0, 4}, {13, 3, 14, 5}, {11, 12, 8, 6}, {15, 10, 9, 7}};   //4
-//			int [][] easy = {{1,2,3,4},{12,13,14,5},{11,8,15,6},{10,9,0,7}};   //4
+			int optimumDepth = scanner.nextInt(); // optimum solution depth that will be used for generating initial state of board
 
 
-//			int [][] easy = initialStateBuilder(optimumDepth);
-			BoardNode node = new BoardNode(generateStringState(easy), 0);
+//			int [][] state = {{0, 1, 3, 4}, {12, 13, 2, 5}, {11, 14, 15, 6}, {10, 9, 8, 7}};   //    HOCA a
+			int [][] state = {{1, 3, 5, 4}, {2, 13, 14, 15}, {11, 12, 9, 6}, {0, 10, 8, 7}};   //    HOCA b
+//			int [][] state = {{1, 13, 3, 4}, {12, 11, 2, 5}, {9, 8, 15, 7}, {10, 6, 14, 0}};   //    HOCA c
+//			int [][] state = {{1, 0, 3, 4}, {2, 13, 14, 5}, {11, 12, 15, 6}, {10, 9, 8, 7}};   //    2
+//			int [][] state = {{1, 2, 3, 4}, {12, 13, 14, 5}, {11, 8, 15, 6}, {10, 9, 0, 7}};   //    1
+//			int [][] state = {{1, 2, 13, 4}, {12, 0, 14, 3}, {11, 15, 5, 6}, {10, 9, 8, 7}};   //4
 
-			switch(input) {    //switch is used to determine what search and difficulty to use
+//			int [][] state = {{1, 2, 0, 4}, {13, 3, 14, 5}, {11, 12, 8, 6}, {15, 10, 9, 7}};   //4
 
-			case 1:
-				search = new UniformCost(node);
-				break;
-			case 2:  //final case for A* which provides options for both Heuristics
-				System.out.println();
-				System.out.println("Please pick a heuristic: ");
-				System.out.println();
-				System.out.println("1. Misplaced Tiles");
-				System.out.println("2. Manhattan");
-				System.out.println("3. New Heuristic Function");
-				System.out.println();
-				int input3 = scanner.nextInt();
+//			int [][] state = {{1, 3, 14, 5}, {12, 15, 2, 4}, {11, 13, 7, 6}, {10, 9, 8, 0}};   //10
 
-				switch(input3){
-					case 1:
-//						search = new Astar(node,1);
-						break;
-					case 2:
-//						search = new Astar(node,2);
-						break;
-					case 3:
-//						search = new Astar(node,3);
-						break;
+            //18741 - 4085 - 13  c  ----------
+            //14372 - 2840 - 13
 
-				}
-				break;
+            // 915 - 525 - 9  b
+            // 970  - 393 - 9
 
-				case 3:
-//					search = new IterativeLenghtening(node);
-					break;
-			}
+            // 9 - 9 - 4  a
+            // 9 - 9 - 4  ---------- 557 - 1805 ils
+
+//      		int [][] state = initialStateBuilder(optimumDepth); //initial state of the game is initialized
+			BoardNode node = new BoardNode(state); // A board node object is created to keep the properties of the board's current situation
+
+            if(input == 1) // call uniform cost search algorithm
+                search = new UniformCost(node);
+            else if(input == 2){ // call astar algorithm
+                System.out.println();
+                System.out.println("Please pick a heuristic: "); // ask user to which heuristic will be used
+                System.out.println();
+                System.out.println("1. Misplaced Tiles");
+                System.out.println("2. Manhattan");
+                System.out.println("3. New Heuristic Function");
+                System.out.println();
+                int input3 = scanner.nextInt();
+
+                switch(input3){ // switch case for deciding which heuristic will be used
+                    case 1:
+                        search = new Astar(node,1); // calls the heuristic function which will be used the number of misplaced tiles
+                        break;
+                    case 2:
+                        search = new Astar(node,2); // calls the heuristic function which will be used the sum of the city-block distances of each misplaced tile from its current location to its goal location
+                        break;
+                    case 3:
+                        search = new Astar(node,3); // calls the heuristic function which is the new heuristic function that generated by us
+                        break;
+
+                }
+            }
+            else if(input == 3){ // call iterative lenghtening algorithm
+                search = new IterativeLenghtening(node);
+
+            }
 
 			System.out.println("The search will begin: ");
 			search.search(); //the search starts
-			System.out.println("Do you want to continue?");
+			System.out.println("Do you want to continue?"); //ask to user if it wants to continue program or not
 			System.out.println();
 			System.out.println("1. Yes");
 			System.out.println("2. No");
 			int input5 = scanner.nextInt();
-			if(input5==2) {
+			if(input5==2)
 				con = false;
-			}
 		}
 	}
 
 
-	public static int[][] initialStateBuilder(int actionNumber){
+	public static int[][] initialStateBuilder(int actionNumber){ // method for initializing the state of the board according to optimum solution depth which taken from the user
 		int state[][] = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
 
 		int col = 1;
@@ -108,8 +107,7 @@ public class Solver {
 		int temp;
 
 		for(int i = 0; i < actionNumber; i++){
-			randomNum = ThreadLocalRandom.current().nextInt(0, 8);
-			System.out.println(randomNum);
+			randomNum = ThreadLocalRandom.current().nextInt(0, 8); //generated random number to select which action to be done
 
 			if(row != 0 && randomNum == 0) {  //UP
 				if(previousDir != 1){
@@ -121,7 +119,7 @@ public class Solver {
 					state[row][col] = temp;
 					row = row - 1;
 				}
-				else{
+				else{ //decrement i if it wants to illegal movement
 					i--;
 				}
 			}
@@ -245,17 +243,6 @@ public class Solver {
 			}
 
 		return state;
-	}
-
-	public static String generateStringState(int[][] state) {   //method that returns a String version of the board
-		StringBuilder sb = new StringBuilder();
-		for (int i =0; i<state.length; i++) {
-			for(int j = 0; j<state[i].length;j++ ) {
-				sb.append(state[i][j]);
-				sb.append("-");
-			}
-		}
-		return sb.toString();
 	}
 
 	
