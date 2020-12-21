@@ -68,6 +68,7 @@ public class Solver {
                 System.out.println();
                 int input3 = scanner.nextInt();
 
+
                 switch(input3){ // switch case for deciding which heuristic will be used
                     case 1:
                         astar = new Astar(node,1); // calls the heuristic function which will be used the number of misplaced tiles

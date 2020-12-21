@@ -1,6 +1,5 @@
 import java.util.*;
 
-
 public class Info {
 	public java.util.PriorityQueue<BoardNode> pQueue; // priority queue which holds prioritized nodes
 	HashMap visited = new HashMap();	//queue for visited nodes
@@ -31,5 +30,5 @@ public class Info {
 	public int getSpace() {  //space is returned
 		return space;
 	}
-	
+
 }

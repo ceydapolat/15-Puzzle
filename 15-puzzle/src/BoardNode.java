@@ -82,7 +82,7 @@ public class BoardNode {
 	public int getCost() {
 		return this.cost;
 	}
-	
+
 	public BoardNode createChild(int a, int b, int dirCost) { //creating the child or possible states from current node
 		int[][] temp = new int[state.length][state.length];
 
@@ -141,6 +141,7 @@ public class BoardNode {
 		}
 			return row;
 	}
+
 
 	public int getCol(int value) {		// get the column value of the given node value
 		int col = 0;

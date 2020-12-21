@@ -89,6 +89,7 @@ public class Astar {
         return false;
 	}
 
+
 	private int misplacedTiles(BoardNode node) { 	// heuristic which tells us how many tiles are in an incorrect position
         int [][] goal ={{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
 		int result = 0;

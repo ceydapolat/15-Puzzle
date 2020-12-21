@@ -59,6 +59,7 @@ public class IterativeLenghtening {
                 limitCost++; // increment limit cost
             }
         }
+
         return false;
     }
 }

@@ -73,6 +73,7 @@ public class Controller {
             upNode.setDir(directions[4]);
             possibleActionList.add(upNode);
         }
+
 		return possibleActionList;  // a list of children is returned
 	}
 
