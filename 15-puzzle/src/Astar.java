@@ -53,31 +53,52 @@ public boolean search() {
 				 //making a priority queue with one of the heuristics determine the Comparator
 				BoardNode node = initialNode;
 				info.pQueue.add(node);
+//				info.visited.put(node.getString(), node.getMaxCost());
+                info.tempQueue.put(node.getString(), node);
 				
 				while(!(info.pQueue.isEmpty())) {
+
+                    if (info.time % 5000 == 0)
+                        System.out.println("Current # of expanded nodes : " + info.time);
+
 					node = info.pQueue.poll();
-					info.incTime();
-				//	info.visited.put(node.hashCode(), node);
+                    info.tempQueue.remove(node);
+                    info.time++;
 					info.visited.put(node.getString(), node.getMaxCost());
-					if(node.isGaol()) {
-						PathActions p = new PathActions(initialNode,node, info); // class that creates a path from goal to start Node if goal is reached.
+
+					if(node.isGoal()) {
+						BoardActions p = new BoardActions(initialNode,node, info); // class that creates a path from goal to start Node if goal is reached.
 						p.printPath(); // the path is then printed
 						return true;
 					}
 					
-					Successor s = new Successor(); // Successor class created to provide next possible moves from current node
-					List<BoardNode> list = s.successor(node); // list of potential children
+					Controller s = new Controller(); // Successor class created to provide next possible moves from current node
+					List<BoardNode> list = s.controller(node); // list of potential children
 
 
 					for(BoardNode temp: list) {
-                        boolean ans= true;
-                        if(info.visited.containsKey(temp.getString())){
-                                ans=false;
-                        }
-                        if(ans) { //if it hasn't been expanded then we can now check if there is a node in the Priority Queue with a higher Cost
+                        if(!info.visited.containsKey(temp.getString())) {
+//                            info.pQueue.add(temp);
+//                            info.pQueueSize();
 
-                            pqueueControl(temp);
+                            if (info.tempQueue.containsKey(temp.getString())) {
+                                System.out.println("xxx");
+                                BoardNode tempnode = (BoardNode) info.tempQueue.get(temp.getString());
+                                if (temp.getMaxCost() < tempnode.getMaxCost()) {
+//                                    System.out.println("ccccc " + info.pQueue.size() );
+                                    info.pQueue.remove(tempnode);
+//                                    System.out.println("ccccc " + info.pQueue.size() );
+                                    info.pQueue.add(temp);
+                                    info.tempQueue.put(temp.getString(), temp);
+                                }
+                            } else {
+                                info.pQueue.add(temp);
+                                info.pQueueSize();
+                                info.tempQueue.put(temp.getString(), temp);
+                            }
+
                         }
+
 					}
 				}
 				return false;
@@ -100,7 +121,6 @@ public boolean search() {
 	}
 
 	public int manhattan(BoardNode node) {   //second heuristic which uses a goal state to help determined how far argument node tiles are from desired position
-//		int [][]goal = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}};
 		int result = 0;
 		int [][]state = node.getMatrix();
 		for(int i=0; i<state.length; i++) {
@@ -113,39 +133,4 @@ public boolean search() {
 		}
 		return result;
 	}
-
-    public  void pqueueControl(BoardNode o) {
-
-        if (o != null) {
-            List es = new ArrayList(info.pQueue);
-
-            int currentmaxCost= o.getMaxCost();
-            int n=info.pQueue.size();
-            int i = n-1;
-            boolean control =true;
-
-            for(; i >0; i--) {
-
-                BoardNode temp= (BoardNode) es.get(i);
-                if(currentmaxCost-1 == temp.getMaxCost())
-                    break;
-
-                if(o.getString().equals(temp.getString())){
-                    control=false;
-
-                    if(temp.getMaxCost() > o.getMaxCost()){
-                        info.pQueue.remove(temp);
-                        info.pQueue.add(o);
-                    }
-                    break;
-                }
-
-            }
-            if(control){
-                info.pQueue.add(o);
-                info.pQueueSize();
-
-            }
-        }
-    }
 }
