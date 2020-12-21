@@ -11,7 +11,8 @@ public class BoardActions {
 		path = this.getInitialPath(initialNode, goalNode);
 		this.info = info;
 	}
-	
+
+
 	
 	private List<BoardNode> getInitialPath(BoardNode initialNode, BoardNode goalNode) {  //using the parent, the board was enabled to roll back from goal state to initial state
 		BoardNode tempNode = goalNode;

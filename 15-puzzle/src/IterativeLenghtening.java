@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class IterativeLenghtening implements Search {
+public class IterativeLenghtening {
     private BoardNode initialNode;
     private int limitCost = 1;
 
@@ -59,6 +59,7 @@ public class IterativeLenghtening implements Search {
                 limitCost++; // increment limit cost
             }
         }
+
         return false;
     }
 }
