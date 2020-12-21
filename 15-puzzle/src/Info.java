@@ -3,9 +3,9 @@ import java.util.*;
 
 public class Info {
 	public java.util.PriorityQueue<BoardNode> pQueue; // priority queue which holds prioritized nodes
+	HashMap visited = new HashMap();	//queue for visited nodes
 	public int time;  // variable for calculating time complexity
 	private int space; //variable for calculating space complexity
-	HashMap visited = new HashMap();	//queue for visited nodes
 	HashMap tempQueue = new HashMap();  //temporary queue to check whether there is node with bigger cost than current node
 
 	public Info() {

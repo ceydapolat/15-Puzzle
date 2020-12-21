@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class UniformCost implements Search {
+public class UniformCost {
 	private BoardNode initialNode;
 	private Info info = new Info(); //information about priority queue for uniform cost search
 
@@ -27,9 +27,9 @@ public class UniformCost implements Search {
 				System.out.println("Current # of expanded nodes : " + info.time + "queue size: " + info.getSpace()) ;
 
 			node = info.pQueue.poll(); //poll first element from the queue
-			info.tempQueue.remove(node);
 			info.time++; //increment time to calculate time complexity
 			info.visited.put(node.getString(), node.getMaxCost()); //add polled node to the visited queue
+			info.tempQueue.remove(node);
 
 			if(node.isGoal()) { // check to see if goal is reached
 				BoardActions p = new BoardActions(initialNode,node,info); // class that creates a path from goal to start node

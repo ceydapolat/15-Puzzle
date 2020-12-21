@@ -1,7 +1,7 @@
 import java.util.Comparator;
 import java.util.List;
 
-public class Astar implements Search {
+public class Astar {
 	private BoardNode initialNode;
 	private int heuristic;
 
@@ -111,8 +111,8 @@ public class Astar implements Search {
 		for(int i=0; i<state.length; i++) {
 			for(int j=0; j<state.length; j++) {
 				int value = state[i][j];
-                if(value == 0)
-                    continue;
+//                if(value == 0)
+//                    continue;
 
 				int maxValue = Math.max(Math.abs(i - node.getRow(value)), Math.abs(j - node.getCol(value)));
 				result += maxValue;

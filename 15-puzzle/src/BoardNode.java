@@ -109,9 +109,7 @@ public class BoardNode {
 	public boolean isGoal() { // Check if goal state has been reached
 		boolean result;
 		int [][] goal = {{1,2,3,4},{12,13,14,5},{11,0,15,6},{10,9,8,7}}; //goal state which we want to reach
-
 		result = this.getString().equals(createStringStateBoard(goal));
-
 		return result;
 	}
 	

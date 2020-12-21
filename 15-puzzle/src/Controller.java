@@ -46,7 +46,6 @@ public class Controller {
 		}
 
 
-
 		//UPPER LEFT
 		if((row != 0) && (col != 0)) {
 			BoardNode rightNode = node.createChild(row-1, col-1,3); // a child is created if the zero tile can move upper left
