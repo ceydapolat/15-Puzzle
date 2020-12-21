@@ -17,8 +17,8 @@ public class BoardNode {
 	public BoardNode(int [][] state) {
 		this.state = state;
 		this.depth = 1;
-		this.children = new ArrayList<BoardNode>(); //the children of the node
-		this.parent = null;
+		this.children = new ArrayList<BoardNode>(); //the children of the current node
+		this.parent = null; //parent of the current node
 		this.cost = 0;
 		this.maxCost = 0;
 		this.stringState = createStringStateBoard(state);
@@ -50,7 +50,6 @@ public class BoardNode {
 		child.setDepth(this.getDepth()+1); //increment the depth
 		child.setPathCost(child.getCost());
 		this.children.add(child);
-	
 	}
 	
 	private void setParent(BoardNode parent) {
