@@ -35,7 +35,7 @@ public class BoardActions {
 			System.out.println();
 			System.out.println();
 			System.out.println("Direction Moved: " + path.get(i).getDir());
-			System.out.println("Depth: " + path.get(i).getDepth());
+			System.out.println("Depth: " + (path.get(i).getDepth()-1));
 			System.out.println("Cost: " + path.get(i).getCost());
 			System.out.println("MaxCost: " + path.get(i).getMaxCost());
 			System.out.println();

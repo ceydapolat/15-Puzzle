@@ -35,9 +35,8 @@ public class IterativeLenghtening {
                 node = info.pQueue.poll();   //poll first element from the queue
                 info.tempQueue.remove(node.getString());
                 info.time++;
-                if(node.getMaxCost() == limitCost) {
+                if(node.getMaxCost() == limitCost) { //if we reached to new cost depth, we increase limit
                     limitCost++;
-                    System.out.println("GİRDİİ  time:  " +info.time );
                 }
                 else{
                     BoardNode node2 = info.pQueue.poll();
@@ -86,7 +85,6 @@ public class IterativeLenghtening {
                 if(!info.visited.containsKey(temp.getString())) { // if node is not visited before
 
                     if(temp.getMaxCost() <= limitCost) {// check if the path cost exceeds the limit cost
-
                         if (info.tempQueue.containsKey(temp.getString()) ) {  //check if the node is included in the Priority Queue
                             BoardNode tempNode = (BoardNode) info.tempQueue.get(temp.getString());
                             if (temp.getMaxCost() < tempNode.getMaxCost()) {

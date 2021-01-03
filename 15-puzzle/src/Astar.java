@@ -32,7 +32,7 @@ public class Astar {
         Comparator<BoardNode> f3Comparator = new Comparator<BoardNode>() { // implemented compare again for heuristic 3
             @Override
             public int compare(BoardNode a, BoardNode b) {
-                return (a.getMaxCost() + (manhattan(a) * manhattan(a)) - b.getMaxCost() - (manhattan(b) * manhattan(b)) );
+                return (int) (a.getMaxCost() + (manhattan(a)*1.5 ) - b.getMaxCost() - (manhattan(b) *1.5));
             }
         };
 
