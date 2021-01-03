@@ -3,6 +3,7 @@ import java.util.*;
 public class IterativeLenghtening {
     private BoardNode initialNode;
     private int limitCost = 1;
+    boolean StartFromInitialNode=false;
 
     private Info info = new Info();
 
@@ -18,6 +19,7 @@ public class IterativeLenghtening {
     }
 
     public boolean search() {
+        info.time++;
         info.makePQueue(new gComparator()); //making a priority queue with gComparator
         BoardNode node = initialNode;
         info.pQueue.add(node);    //add first child to the priority queue
@@ -25,10 +27,19 @@ public class IterativeLenghtening {
 
         while(!(info.pQueue.isEmpty())) { //iterate pQueue until it's empty
 
-            if (info.time % 5000 == 0)  //print current # of expanded node
-                System.out.println("Current # of expanded nodes : " + info.time);
+            if (info.time % 5000 == 0) //print current # of expanded node
+                System.out.println("Current # of expanded nodes : " + info.time + "queue size: " + info.getSpace()) ;
 
-            node = info.pQueue.poll();   //poll first element from the queue
+            if(!StartFromInitialNode){
+                node = info.pQueue.poll();   //poll first element from the queue
+            }
+            else{
+                node = initialNode;
+                info.pQueue.clear();
+                info.tempQueue.clear();
+                info.visited.clear();
+            }
+
             info.time++;  //increment time to calculate time complexity
             info.tempQueue.put(node.getString(), node);  //add polled node to the visited queue
 
@@ -41,23 +52,44 @@ public class IterativeLenghtening {
             Controller s = new Controller();    // controller class created to provide next possible moves from current node
             List<BoardNode> list = s.controller(node); // list of potential children
 
+            StartFromInitialNode =false;
+            int controlStartFromInitialNode=0;
             for(BoardNode temp: list) {
-                if(!info.visited.containsKey(temp.getString())) { //check if the node has been visited before
-                    if (info.tempQueue.containsKey(temp.getString()) && temp.getMaxCost() <= limitCost) { // check if the path cost exceeds the limit cost
-                        BoardNode tempNode = (BoardNode) info.tempQueue.get(temp.getString());
-                        if (temp.getMaxCost() < tempNode.getMaxCost()) {
-                            info.pQueue.remove(tempNode);   // remove temporary node from temporary queue if current node has smaller cost
-                            info.pQueue.add(temp);          // add current node to the priority queue
-                            info.tempQueue.put(temp.getString(), temp);  //add new node to the temporary queue
+                if(!info.visited.containsKey(temp.getString())) { // if node is not visited before
+
+                    if(temp.getMaxCost() <= limitCost) {// check if the path cost exceeds the limit cost
+
+                        if (info.tempQueue.containsKey(temp.getString()) ) {  //check if the node is included in the Priority Queue
+                            BoardNode tempNode = (BoardNode) info.tempQueue.get(temp.getString());
+                            if (temp.getMaxCost() < tempNode.getMaxCost()) {
+                                info.pQueue.remove(tempNode);   // remove temporary node from temporary queue if current node has smaller cost
+                                info.pQueue.add(temp);          // add current node to the priority queue
+                                info.tempQueue.put(temp.getString(), temp);  //add new node to the temporary queue
+                            }
+
+                        } else { //node is not included in the Priority Queue
+                                info.pQueue.add(temp); // add it to the pQueue
+                                info.pQueueSize();
+                                info.tempQueue.put(temp.getString(), temp); // add it to the tempQueue
+
                         }
-                    } else { // if node is not visited before
-                        info.pQueue.add(temp); // add it to the pQueue
-                        info.pQueueSize();
-                        info.tempQueue.put(temp.getString(), temp); // add it to the tempQueue
+                    }
+                    else{
+                        controlStartFromInitialNode++;
+                        continue;
+
                     }
                 }
-                limitCost++; // increment limit cost
+                else{  //node is visited before
+                    controlStartFromInitialNode++;
+                }
             }
+            if(controlStartFromInitialNode == list.size())
+                StartFromInitialNode=true;
+            else
+                StartFromInitialNode=false;
+
+            limitCost++; // increment limit cost
         }
 
         return false;
