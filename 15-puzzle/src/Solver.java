@@ -33,25 +33,9 @@ public class Solver {
 
 //			int [][] state = {{0, 1, 3, 4}, {12, 13, 2, 5}, {11, 14, 15, 6}, {10, 9, 8, 7}};   //    HOCA a
 //			int [][] state = {{1, 3, 5, 4}, {2, 13, 14, 15}, {11, 12, 9, 6}, {0, 10, 8, 7}};   //    HOCA b
-			int [][] state = {{1, 13, 3, 4}, {12, 11, 2, 5}, {9, 8, 15, 7}, {10, 6, 14, 0}};   //    HOCA c
-//			int [][] state = {{1, 0, 3, 4}, {2, 13, 14, 5}, {11, 12, 15, 6}, {10, 9, 8, 7}};   //    2
-//			int [][] state = {{1, 2, 3, 4}, {12, 13, 14, 5}, {11, 8, 15, 6}, {10, 9, 0, 7}};   //    1
-//			int [][] state = {{1, 2, 13, 4}, {12, 0, 14, 3}, {11, 15, 5, 6}, {10, 9, 8, 7}};   //4
+//			int [][] state = {{1, 13, 3, 4}, {12, 11, 2, 5}, {9, 8, 15, 7}, {10, 6, 14, 0}};   //    HOCA c
 
-//			int [][] state = {{1, 2, 0, 4}, {13, 3, 14, 5}, {11, 12, 8, 6}, {15, 10, 9, 7}};   //4
-
-//			int [][] state = {{1, 3, 14, 5}, {12, 15, 2, 4}, {11, 13, 7, 6}, {10, 9, 8, 0}};   //10
-
-            //18741 - 4085 - 13  c  ----------
-            //14372 - 2840 - 13
-
-            // 915 - 525 - 9  b
-            // 970  - 393 - 9
-
-            // 9 - 9 - 4  a
-            // 9 - 9 - 4  ---------- 557 - 1805 ils
-
-//      		int [][] state = initialStateBuilder(optimumDepth); //initial state of the game is initialized
+      	    int [][] state = initialStateBuilder(optimumDepth); //initial state of the game is initialized
 			BoardNode node = new BoardNode(state); // A board node object is created to keep the properties of the board's current situation
 
 			if(input == 1){   // call uniform cost search algorithm
@@ -113,6 +97,16 @@ public class Solver {
 		int temp;
 
 		for(int i = 0; i < actionNumber; i++){
+
+//			System.out.println(i + ". adım: ");
+//			for(int j=0; j<4;j++){
+//				for(int k=0; k<4;k++){
+//					System.out.print(state[j][k] + " ");
+//				}
+//				System.out.println("");
+//
+//			}
+
 			randomNum = ThreadLocalRandom.current().nextInt(0, 8); //generated random number to select which action to be done
 
 			if(row != 0 && randomNum == 0) {  //UP

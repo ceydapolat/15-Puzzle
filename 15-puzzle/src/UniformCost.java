@@ -59,7 +59,7 @@ public class UniformCost {
 				}
 			}
 		}
-		
+
 		return false;
 	}
 }
